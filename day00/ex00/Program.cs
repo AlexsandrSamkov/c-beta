@@ -17,8 +17,13 @@ namespace day01
                 Console.WriteLine("Ошибка ввода. Проверьте входные данные и повторите запрос.");
                 return;
             }
-            double sum, rate, payment, resTerm, resPay;
-            int term, selectMount ;
+            var sum = double.NaN;
+            var rate = double.NaN;
+            var payment = double.NaN;
+            var resTerm = double.NaN;
+            var resPay = double.NaN;
+            var term = new int();
+            var selectMount = new int();;
             Double.TryParse(args[0],out sum); 
             Double.TryParse(args[1],out rate); 
             Int32.TryParse(args[2], out term);
@@ -56,17 +61,15 @@ namespace day01
                                   + Math.Round(resPay - resTerm ,2) + "р.");
             }
         }
-
-        static int ftDayYear()
-        {
-            DateTime thisDay = DateTime.Today;
-            return (DateTime.IsLeapYear(thisDay.Year) ? 366 : 365);
-        }
         static double overpaymentPay(double sum, double rate, int term, int selectMount, double payment)
         {
-            double loanCost, perMouthRate, per, perAll;
+            var loanCost = double.NaN;
+            var perMouthRate= double.NaN;
+            var per= double.NaN;
+            var perAll = double.NaN;
+            var mouthDay = new int();
+            var maxMouth = new int();
             DateTime thisDay = DateTime.Today;
-            int yearDay, mouthDay, maxMouth;
             perAll = 0;
             maxMouth = term;
             perMouthRate = rate / 12 / 100;
@@ -81,9 +84,8 @@ namespace day01
                     loanCost = (sum * perMouthRate * Math.Pow(1 + perMouthRate, term))
                                / (Math.Pow(1 + perMouthRate, term) - 1);
                 }
-                yearDay = ftDayYear();
                 mouthDay =  DateTime.DaysInMonth(thisDay.Year, thisDay.Month);
-                per = (sum * rate * mouthDay / 100.0 / yearDay);
+                per = (sum * rate * mouthDay / 100.0 / (DateTime.IsLeapYear(thisDay.Year) ? 366 : 365));
                 thisDay = thisDay.AddMonths(1);
                 sum -= loanCost - per;
                 perAll += per;
@@ -92,9 +94,13 @@ namespace day01
         }
         static double overpaymentTerm(double sum, double rate, int term, int selectMount, double payment)
         {
-            double loanCost, perMouthRate, per, perAll;
+            var loanCost = double.NaN;
+            var perMouthRate= double.NaN;
+            var per= double.NaN;
+            var perAll = double.NaN;
+            var mouthDay = new int();
+            var maxMouth = new int();
             DateTime thisDay = DateTime.Today;
-            int yearDay, mouthDay, maxMouth;
             perAll = 0;
             maxMouth = term;
             perMouthRate = rate / 12 / 100;
@@ -106,9 +112,8 @@ namespace day01
                 {
                     sum -= payment;
                 }
-                yearDay = ftDayYear();
                 mouthDay =  DateTime.DaysInMonth(thisDay.Year, thisDay.Month);
-                per = (sum * rate * mouthDay / 100.0 / yearDay);
+                per = (sum * rate * mouthDay / 100.0 / (DateTime.IsLeapYear(thisDay.Year) ? 366 : 365));
                 thisDay = thisDay.AddMonths(1);
                 if (sum - loanCost <= 0)
                 {

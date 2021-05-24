@@ -8,46 +8,49 @@ namespace ex01
         {
             var name = string.Empty;
             var line = string.Empty;
-            char key;
-            while (true)
+            var key = new char();
+            Console.WriteLine(">Enter name:");
+            name = Console.ReadLine();
+            if (string.IsNullOrEmpty(name))
             {
-                Console.WriteLine(">Enter name:");
-                name = Console.ReadLine();
-                if (string.IsNullOrEmpty(name))
-                {
-                    Console.WriteLine("Your name was not found");
-                    continue;
-                }
-                key = 'n';
-                using (var sr = new StreamReader("/Users/aleksandrsamkov/RiderProjects/ex01/ex01/names.txt", System.Text.Encoding.Default))
-                {
-                    
-                    while (!string.IsNullOrEmpty(line = sr.ReadLine()))
+                Console.WriteLine("Your name was not found"); 
+                return;
+            }
+            key = 'n';
+            using (var sr = new StreamReader("./names.txt", System.Text.Encoding.Default))
+            {
+                while (!string.IsNullOrEmpty(line = sr.ReadLine()))
+                { 
+                    if (line == name)
                     {
-                        if (LevenshteinDistance(name, line) < 3)
-                        {
-                            Console.WriteLine("Did you mean “" + line + "”? Y/N");
-                            while (true)
-                            {
-                                key = Console.ReadKey().KeyChar;
-                                if (key == 'y' | key == 'Y' | key == 'n' | key == 'N')
-                                    break;
-                            }
-                            if (key == 'y' | key == 'Y')
+                        key = 'y';
+                        break;
+                    }
+                    if (LevenshteinDistance(name, line) < 2)
+                    { 
+                        Console.WriteLine("Did you mean “" + line + "”? Y/N"); 
+                        while (true) 
+                        { 
+                            key = Console.ReadKey().KeyChar; 
+                            if (key == 'y' | key == 'Y' | key == 'n' | key == 'N') 
+                            { 
+                                Console.WriteLine(); 
                                 break;
-                        }
+                            }
+                        } 
+                        if (key == 'y' | key == 'Y') 
+                            break;
                     }
                 }
-                if (key == 'n' | key == 'N')
-                    Console.WriteLine("Your name was not found.");
-                Console.ReadKey();
             }
+            if (key == 'y' | key == 'Y')
+                Console.WriteLine("Hello, " + name + "!");
+            if (key == 'n' | key == 'N')
+                Console.WriteLine("Your name was not found.");
         }
        static int LevenshteinDistance(string string1, string string2)
-        {
-            if (string1 == null) throw new ArgumentNullException("string1");
-            if (string2 == null) throw new ArgumentNullException("string2");
-            int diff;
+       {
+            var diff = new int();
             int[,] m = new int[string1.Length + 1, string2.Length + 1];
 
             for (int i = 0; i <= string1.Length; i++) { m[i, 0] = i; }
